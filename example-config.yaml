@@ -1,0 +1,18 @@
+sounds:
+  - id: letterA
+    path: ~/sounds/letterA.wav
+  - id: letterB
+    path: ~/sounds/letterB.wav
+  - id: letterC
+    path: ~/sounds/letterC.wav
+
+sets:
+  letterA_set:
+    - letterA
+  several_set:
+    - letterA
+    - letterB
+    - letterC
+
+mappings:
+  - id: KEY_A

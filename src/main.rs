@@ -1,62 +1,76 @@
-use anyhow::Result;
-use key_sounds::KeySounds;
-use kira::effect::reverb::ReverbBuilder;
-use kira::track::TrackBuilder;
-use kira::{AudioManager, AudioManagerSettings, DefaultBackend};
-use rdev::{Event, EventType, grab};
+use rdev::{Event, EventType, Key, grab};
 use std::sync::mpsc::channel;
-use std::thread;
 
 mod key_sounds;
+mod sound_thread;
+mod stdin_sink;
 
-fn main() -> Result<()> {
+fn main() {
     let (tx, rx) = channel();
 
     let callback = move |event: Event| -> Option<Event> {
-        match event.event_type {
-            EventType::KeyPress(key_press) => {
-                println!("Key pressed: {:?}", key_press);
+        let event_type = event.event_type;
+        let event_name = event.name.clone().unwrap_or_default(); // binding
+        let glyph_str = event_name.as_str();
+        match (event_type, glyph_str) {
+            (EventType::KeyPress(key_press), glyph) => {
+                match key_press {
+                    Key::Alt
+                    | Key::AltGr
+                    | Key::ShiftLeft
+                    | Key::ShiftRight
+                    | Key::ControlLeft
+                    | Key::ControlRight => {
+                        // TODO set bool for modifier keys and also detect KeyRelease to unset same bool
+                        println!("modifier key: '{:?}'", event_type);
+                    }
+                    Key::Backspace
+                    | Key::CapsLock
+                    | Key::Delete
+                    | Key::DownArrow
+                    | Key::End
+                    | Key::Escape
+                    | Key::Home
+                    | Key::LeftArrow
+                    | Key::MetaLeft
+                    | Key::MetaRight
+                    | Key::PageDown
+                    | Key::PageUp
+                    | Key::Return
+                    | Key::RightArrow
+                    | Key::Space
+                    | Key::Tab
+                    | Key::UpArrow
+                    | Key::PrintScreen
+                    | Key::ScrollLock
+                    | Key::Pause
+                    | Key::NumLock
+                    | Key::IntlBackslash
+                    | Key::Insert
+                    | Key::KpReturn
+                    | Key::Function
+                    | Key::KpDelete => {
+                        println!("modifier key: '{:?}'", event_type);
+                    }
+                    Key::Unknown(_) => todo!(),
+                    _ => {
+                        println!("glyph: '{glyph}'");
+                    }
+                }
                 let _ = tx.send(key_press.clone());
             }
-            _ => {}
+            (EventType::KeyRelease(_), _) => {}
+            (_, _) => {}
         }
+
         Some(event)
     };
 
-    thread::spawn(move || {
-        // TODO: Handle errors
-        let mut manager = AudioManager::<DefaultBackend>::new(AudioManagerSettings::default())
-            .expect("FIRST DEATH");
+    stdin_sink::stdin_sink();
 
-        // TODO: Handle errors
-        let mut track = manager
-            .add_sub_track({
-                let mut builder = TrackBuilder::new();
-                builder.add_effect(ReverbBuilder::new().damping(0.05).feedback(0.2));
-                builder
-            })
-            .expect("NO TRAX BUILD");
-
-        let mut key_sounds = KeySounds::new();
-
-        loop {
-            match rx.recv() {
-                // TODO: Handle errors
-                Err(_) => break,
-                Ok(key_press) => match key_sounds.sound_for_key(key_press) {
-                    Some(sound) => match track.play(sound) {
-                        Err(_) => {}
-                        Ok(_) => {}
-                    },
-                    None => {}
-                },
-            }
-        }
-    });
+    sound_thread::sound_thread(rx);
 
     if let Err(error) = grab(callback) {
         println!("Error: {:?}", error)
     }
-
-    Ok(())
 }

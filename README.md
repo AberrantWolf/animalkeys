@@ -1,6 +1,8 @@
 # AnimalKeys
 
-Make it sound like animalese when you type with your keyboard.
+Make it sound like animalese when you type with your keyboard. For fun.
+
+Sooth yourself, or annoy those around you (or both!).
 
 # Roadmap
 
@@ -12,9 +14,7 @@ Make it sound like animalese when you type with your keyboard.
 
 # Copyright Stuff
 
-The initial set of sounds was generated using MacOS's built-in text-to-speech voice. My belief is that this is not copyrighted audio and can be used and distributed.
-
-In the future, I will be recording all the sounds myself, and all of those will be some kind of creative commons license, probably. I will never attempt to acquire actual sounds from any games or software. If I'm very lucky, it may sound authentic, but my promise is that they will always be sourced ethically, and licensed so you can share them around, worry-free.
+Any sounds I may include in this repo will be some kind of creative commons license, probably. I will never attempt to acquire actual sounds from any games or software. If I'm very lucky, it may sound authentic, but they will always be sourced ethically, and licensed so you can share them around, worry-free.
 
 # Privacy and Safety Notes
 

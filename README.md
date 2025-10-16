@@ -16,6 +16,12 @@ Sooth yourself, or annoy those around you (or both!).
 
 Any sounds I may include in this repo will be some kind of creative commons license, probably. I will never attempt to acquire actual sounds from any games or software. If I'm very lucky, it may sound authentic, but they will always be sourced ethically, and licensed so you can share them around, worry-free.
 
+## Licenses
+
+The whole project is uses an MIT license. The sound files in the `./sounds` folder are less restrictively license under CC0 -- meaning I give them to the public domain -- which supercedes the MIT license.
+
+If you know of a better way to do this, then let me know. I'm not a lawyer, I just want my code to be MIT and my voice to me public domain. Thanks!
+
 # Privacy and Safety Notes
 
 We like to have fun here, but I just want to bring up real quick some of the risks of running a program like this.

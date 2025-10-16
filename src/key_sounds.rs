@@ -1,7 +1,14 @@
 use kira::sound::static_sound::StaticSoundData;
+use rand::prelude::*;
 use rdev::Key::{self, *};
 
+const VOICE_RANGE: std::ops::Range<f64> = 1.3_f64..1.4_f64;
+
+// TODO: Add sounds for special characters
+// TODO: Track modifier keys to play special characters, not just the base (e.g., number)
 pub struct KeySounds {
+    rng: ThreadRng,
+    next_playback_rate: f64,
     sound_a: StaticSoundData,
     sound_b: StaticSoundData,
     sound_c: StaticSoundData,
@@ -42,7 +49,11 @@ pub struct KeySounds {
 
 impl KeySounds {
     pub fn new() -> Self {
+        let mut rng = rand::rng();
+        let next_playback_rate = rng.random_range(VOICE_RANGE);
         Self {
+            rng,
+            next_playback_rate,
             sound_a: StaticSoundData::from_file("sounds/a.ogg").expect("ACK"),
             sound_b: StaticSoundData::from_file("sounds/b.ogg").expect("ACK"),
             sound_c: StaticSoundData::from_file("sounds/c.ogg").expect("ACK"),
@@ -82,44 +93,46 @@ impl KeySounds {
         }
     }
 
-    pub fn sound_for_key(&self, key_press: Key) -> Option<StaticSoundData> {
+    pub fn sound_for_key(&mut self, key_press: Key) -> Option<StaticSoundData> {
+        let rate = self.next_playback_rate;
+        self.next_playback_rate = self.rng.random_range(VOICE_RANGE);
         match key_press {
-            KeyA => Some(self.sound_a.clone()),
-            KeyB => Some(self.sound_b.clone()),
-            KeyC => Some(self.sound_c.clone()),
-            KeyD => Some(self.sound_d.clone()),
-            KeyE => Some(self.sound_e.clone()),
-            KeyF => Some(self.sound_f.clone()),
-            KeyG => Some(self.sound_g.clone()),
-            KeyH => Some(self.sound_h.clone()),
-            KeyI => Some(self.sound_i.clone()),
-            KeyJ => Some(self.sound_j.clone()),
-            KeyK => Some(self.sound_k.clone()),
-            KeyL => Some(self.sound_l.clone()),
-            KeyM => Some(self.sound_m.clone()),
-            KeyN => Some(self.sound_n.clone()),
-            KeyO => Some(self.sound_o.clone()),
-            KeyP => Some(self.sound_p.clone()),
-            KeyQ => Some(self.sound_q.clone()),
-            KeyR => Some(self.sound_r.clone()),
-            KeyS => Some(self.sound_s.clone()),
-            KeyT => Some(self.sound_t.clone()),
-            KeyU => Some(self.sound_u.clone()),
-            KeyV => Some(self.sound_v.clone()),
-            KeyW => Some(self.sound_w.clone()),
-            KeyX => Some(self.sound_x.clone()),
-            KeyY => Some(self.sound_y.clone()),
-            KeyZ => Some(self.sound_z.clone()),
-            Num0 => Some(self.sound_0.clone()),
-            Num1 => Some(self.sound_1.clone()),
-            Num2 => Some(self.sound_2.clone()),
-            Num3 => Some(self.sound_3.clone()),
-            Num4 => Some(self.sound_4.clone()),
-            Num5 => Some(self.sound_5.clone()),
-            Num6 => Some(self.sound_6.clone()),
-            Num7 => Some(self.sound_7.clone()),
-            Num8 => Some(self.sound_8.clone()),
-            Num9 => Some(self.sound_9.clone()),
+            KeyA => Some(self.sound_a.playback_rate(rate)),
+            KeyB => Some(self.sound_b.playback_rate(rate)),
+            KeyC => Some(self.sound_c.playback_rate(rate)),
+            KeyD => Some(self.sound_d.playback_rate(rate)),
+            KeyE => Some(self.sound_e.playback_rate(rate)),
+            KeyF => Some(self.sound_f.playback_rate(rate)),
+            KeyG => Some(self.sound_g.playback_rate(rate)),
+            KeyH => Some(self.sound_h.playback_rate(rate)),
+            KeyI => Some(self.sound_i.playback_rate(rate)),
+            KeyJ => Some(self.sound_j.playback_rate(rate)),
+            KeyK => Some(self.sound_k.playback_rate(rate)),
+            KeyL => Some(self.sound_l.playback_rate(rate)),
+            KeyM => Some(self.sound_m.playback_rate(rate)),
+            KeyN => Some(self.sound_n.playback_rate(rate)),
+            KeyO => Some(self.sound_o.playback_rate(rate)),
+            KeyP => Some(self.sound_p.playback_rate(rate)),
+            KeyQ => Some(self.sound_q.playback_rate(rate)),
+            KeyR => Some(self.sound_r.playback_rate(rate)),
+            KeyS => Some(self.sound_s.playback_rate(rate)),
+            KeyT => Some(self.sound_t.playback_rate(rate)),
+            KeyU => Some(self.sound_u.playback_rate(rate)),
+            KeyV => Some(self.sound_v.playback_rate(rate)),
+            KeyW => Some(self.sound_w.playback_rate(rate)),
+            KeyX => Some(self.sound_x.playback_rate(rate)),
+            KeyY => Some(self.sound_y.playback_rate(rate)),
+            KeyZ => Some(self.sound_z.playback_rate(rate)),
+            Num0 => Some(self.sound_0.playback_rate(rate)),
+            Num1 => Some(self.sound_1.playback_rate(rate)),
+            Num2 => Some(self.sound_2.playback_rate(rate)),
+            Num3 => Some(self.sound_3.playback_rate(rate)),
+            Num4 => Some(self.sound_4.playback_rate(rate)),
+            Num5 => Some(self.sound_5.playback_rate(rate)),
+            Num6 => Some(self.sound_6.playback_rate(rate)),
+            Num7 => Some(self.sound_7.playback_rate(rate)),
+            Num8 => Some(self.sound_8.playback_rate(rate)),
+            Num9 => Some(self.sound_9.playback_rate(rate)),
             _ => None,
         }
     }

@@ -6,4 +6,5 @@ edition = "2024"
 [dependencies]
 anyhow = "1.0.100"
 kira = "0.10.8"
+rand = "0.9.2"
 rdev = { version = "0.5.3", features = ["unstable_grab"] }
